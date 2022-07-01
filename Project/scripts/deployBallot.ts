@@ -14,6 +14,9 @@ function convertStringArrayToBytes32(array: string[]) {
   }
   return bytes32Array;
 }
+aklsdhklasdhklasdkashdknas 
+
+sdklasldsa
 
 async function main() {
   const wallet =
