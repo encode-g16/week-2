@@ -3,32 +3,38 @@ import "dotenv/config";
 import * as ballotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 import * as tokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
 import { CustomBallot } from "../typechain";
-import registry from "../registry_ben.json";
-
-// This key is already public on Herong's Tutorial Examples - v1.03, by Dr. Herong Yang
-// Do never expose your keys like this
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
-// update contract addresses from registry
-const ballotAddress = registry.ballotAddress;
-const tokenAddress = registry.tokenAddress;
+import { args, getRopstenProvider, getWallet } from "../config";
 
 async function main() {
-  const wallet =
-    process.env.MNEMONIC && process.env.MNEMONIC.length > 0
-      ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
-      : new ethers.Wallet(PRIVATE_KEY as string);
-  console.log(`Using address ${wallet.address}`);
-  const provider = ethers.providers.getDefaultProvider("ropsten");
+  if (!args.tokenAddress) {
+    throw new Error(
+      "please provide the token address (--token-address or --ta)"
+    );
+  }
+  if (!args.ballotAddress) {
+    throw new Error(
+      "please provide the ballot address (--ballot-address or --ba)"
+    );
+  }
+
+  const wallet = getWallet();
+  const provider = getRopstenProvider();
   const signer = wallet.connect(provider);
   const balanceBN = await signer.getBalance();
   const walletBalance = Number(ethers.utils.formatEther(balanceBN));
+
+  // console.log(`using token address: ${args.tokenAddress}`);
   const tokenContract = new ethers.Contract(
-    tokenAddress,
+    args.tokenAddress,
     tokenJson.abi,
     signer
   );
-  const tokenBalance = Number(ethers.utils.formatEther(await tokenContract.balanceOf(wallet.address)))
-  console.log(`Wallet balance ${walletBalance} ether. Token balance ${tokenBalance}`);
+  const tokenBalance = Number(
+    ethers.utils.formatEther(await tokenContract.balanceOf(wallet.address))
+  );
+  console.log(
+    `Wallet balance ${walletBalance} ether. Token balance ${tokenBalance}`
+  );
   if (walletBalance < 0.01) {
     throw new Error("Not enough ether");
   }
@@ -37,18 +43,18 @@ async function main() {
   if (process.argv.length < 4) throw new Error("Vote amount missing");
   const voteAmount = ethers.utils.parseEther(process.argv[3]);
   console.log(
-    `Attaching ballot contract interface to address ${ballotAddress}`
+    `Attaching ballot contract interface to address ${args.ballotAddress}`
   );
   const ballotContract: CustomBallot = new Contract(
-    ballotAddress,
+    args.ballotAddress,
     ballotJson.abi,
     signer
   ) as CustomBallot;
-  
+
   // delegate to self
   await tokenContract.delegate(wallet.address);
   const votingPower = await ballotContract.votingPower();
-  console.log(`Voting Power of ${wallet.address} is ${votingPower}`)
+  console.log(`Voting Power of ${wallet.address} is ${votingPower}`);
   // cast vote
   console.log(`Cast a vote to Cake`);
   const tx = await ballotContract.vote(votedProposal, voteAmount);
