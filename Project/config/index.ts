@@ -9,6 +9,8 @@ type Args = {
   proposal: string[] | undefined;
   mintTo: string[] | undefined;
   delegateTo: string[] | undefined;
+  voteProposal: number | undefined;
+  voteAmount: string | undefined;
   signerPrivateKey: string | undefined;
   signerMnemonic: string | undefined;
   ropstenUrl: string | undefined;
@@ -70,6 +72,16 @@ export const args = yargs(hideBin(process.argv))
     array: true,
     type: "string",
     description: "Address to delegate votes to",
+  })
+  .option("vote-proposal", {
+    alias: "vp",
+    type: "number",
+    description: "Index of the proposal to vote for",
+  })
+  .option("vote-amount", {
+    alias: "va",
+    type: "string",
+    description: "Amount of votes to add to the proposal",
   })
   .option("signer-private-key", {
     alias: "pk",
