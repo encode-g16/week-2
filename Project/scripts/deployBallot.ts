@@ -7,6 +7,8 @@ import * as ballotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallo
 const EXPOSED_KEY =
   "8da4ef21b864d2cc526dbdb2a120bd2874c36c9d0a1fb7f8c63d7f7a8b41de8f";
 
+const tokenAddress = "0x27F47342B874df32e9E6BBcb09BB2D12cb385b65";
+
 function convertStringArrayToBytes32(array: string[]) {
   const bytes32Array = [];
   for (let index = 0; index < array.length; index++) {
@@ -30,7 +32,7 @@ async function main() {
     throw new Error("Not enough ether");
   }
   console.log("Deploying Ballot contract");
-  const tokenAddress = "0x4337785FcD690BaA3C6C151B1b80747423683aBD";
+
   console.log("Proposals: ");
   const proposals = process.argv.slice(2);
   if (proposals.length < 2) throw new Error("Not enough proposals provided");

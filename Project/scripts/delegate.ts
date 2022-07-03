@@ -8,7 +8,7 @@ const EXPOSED_KEY =
   "8da4ef21b864d2cc526dbdb2a120bd2874c36c9d0a1fb7f8c63d7f7a8b41de8f";
 
 // Address of deployed Token.sol on Rinkeby
-const tokenAddress = "0x4337785FcD690BaA3C6C151B1b80747423683aBD";
+const tokenAddress = "0x27F47342B874df32e9E6BBcb09BB2D12cb385b65";
 
 async function main() {
   // create wallet and connect to provider
@@ -22,6 +22,11 @@ async function main() {
     process.env.ROPSTEN_URL
   );
   const signer = wallet.connect(provider);
+
+  // connect to account 2
+  const wallet2 = new ethers.Wallet(process.env.PRIVATE_KEY2 ?? EXPOSED_KEY);
+  const signer2 = wallet2.connect(provider);
+
   const balanceBN = await signer.getBalance();
   const balance = Number(ethers.utils.formatEther(balanceBN));
   console.log(`Wallet balance ${balance}`);
@@ -29,38 +34,49 @@ async function main() {
     throw new Error("Not enough ether");
   }
 
-  // get contract instance at the right address
-  const tokenContract = new ethers.Contract(
+  // get contract instance connected to Account 1
+  const tokenContractAccount1 = new ethers.Contract(
     tokenAddress,
     tokenJson.abi,
     signer
   );
 
-  // delegate votes to self
-  console.log(`Account 1 delegating votes to itself...`);
-  const transactionResponse = await tokenContract.delegate(wallet.address);
+  // get contract instance connected to Account 2
+  const tokenContractAccount2 = new ethers.Contract(
+    tokenAddress,
+    tokenJson.abi,
+    signer2
+  );
+
+  // Account 1 delegates votes to self
+  console.log(`Account 1 is delegating votes to itself...`);
+  const transactionResponse = await tokenContractAccount1.delegate(
+    wallet.address
+  );
   const transactionReceipt = await transactionResponse.wait(); // wait for transaction to be mined
   console.log(
     `Delgating complete. Hash: ${transactionReceipt.transactionHash.toString()}`
   );
-  const delegatingTo = await tokenContract.delegates(wallet.address);
-  console.log(`${wallet.address} delegated to ${delegatingTo.toString()}`);
-
-  // do a transfer to update the snapshot
-  const account2 = "0x2F34973B63c65091e3e2203D8CAD3d158f6feE38";
+  const account1DelegatingTo = await tokenContractAccount1.delegates(
+    wallet.address
+  );
   console.log(
-    `Transfering tokens from account 1 to account 2 to update snapshot...`
+    `${wallet.address} has delegated to ${account1DelegatingTo.toString()}`
   );
-  const tx = await tokenContract.transfer(
-    account2,
-    ethers.utils.parseEther("0.01")
-  );
-  const receipt = await tx.wait();
-  console.log(`Transfer complete. Hash: ${receipt.transactionHash.toString()}`);
 
-  // get and print updates number of votes
-  const numVotes = await tokenContract.getVotes(wallet.address);
-  console.log(`${wallet.address} has ${numVotes} votes`);
+  // Account 2 delegates votes to self
+  console.log(`Account 2 is delegating votes to itself...`);
+  const txResponse = await tokenContractAccount2.delegate(wallet2.address);
+  const txReceipt = await txResponse.wait(); // wait for transaction to be mined
+  console.log(
+    `Delgating complete. Hash: ${txReceipt.transactionHash.toString()}`
+  );
+  const account2DelegatingTo = await tokenContractAccount2.delegates(
+    wallet2.address
+  );
+  console.log(
+    `${wallet2.address} has delegated to ${account2DelegatingTo.toString()}`
+  );
   console.log("-----------------------------------------------------");
 }
 

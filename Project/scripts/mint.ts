@@ -8,7 +8,7 @@ const EXPOSED_KEY =
   "8da4ef21b864d2cc526dbdb2a120bd2874c36c9d0a1fb7f8c63d7f7a8b41de8f";
 
 // Address of deployed Token.sol on Rinkeby
-const tokenAddress = "0x4337785FcD690BaA3C6C151B1b80747423683aBD";
+const tokenAddress = "0x27F47342B874df32e9E6BBcb09BB2D12cb385b65";
 
 // Addresses to send tokens to
 const addresses = [
