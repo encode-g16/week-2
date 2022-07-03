@@ -37,18 +37,26 @@ async function main() {
   );
 
   // delegate votes to self
+  console.log(`Account 1 delegating votes to itself...`);
   const transactionResponse = await tokenContract.delegate(wallet.address);
-  transactionResponse.wait(); // wait for transaction to be mined
+  const transactionReceipt = await transactionResponse.wait(); // wait for transaction to be mined
+  console.log(
+    `Delgating complete. Hash: ${transactionReceipt.transactionHash.toString()}`
+  );
   const delegatingTo = await tokenContract.delegates(wallet.address);
-  console.log(`${wallet.address} delegated to ${delegatingTo}`);
+  console.log(`${wallet.address} delegated to ${delegatingTo.toString()}`);
 
   // do a transfer to update the snapshot
   const account2 = "0x2F34973B63c65091e3e2203D8CAD3d158f6feE38";
+  console.log(
+    `Transfering tokens from account 1 to account 2 to update snapshot...`
+  );
   const tx = await tokenContract.transfer(
     account2,
     ethers.utils.parseEther("0.01")
   );
-  tx.wait();
+  const receipt = await tx.wait();
+  console.log(`Transfer complete. Hash: ${receipt.transactionHash.toString()}`);
 
   // get and print updates number of votes
   const numVotes = await tokenContract.getVotes(wallet.address);
