@@ -1,7 +1,7 @@
 import { ethers } from "ethers";
 import "dotenv/config";
 import * as tokenJson from "../artifacts/contracts/Token.sol/MyToken.json";
-import { args, getRopstenProvider, getWallet } from "../config";
+import { getRopstenProvider, getWallet } from "../config";
 
 /**
  * Example command:
@@ -30,6 +30,7 @@ async function main() {
   await tokenContract.deployed();
   console.log("Completed");
   console.log(`Contract deployed at ${tokenContract.address}`);
+  console.log(`Transaction hash ${tokenContract.deployTransaction.hash}`);
 }
 
 main().catch((error) => {
