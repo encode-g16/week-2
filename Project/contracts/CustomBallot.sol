@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: GPL-3.0
-pragma solidity >=0.7.0 <0.9.0;
+pragma solidity ^0.8.4;
 
 interface IERC20Votes {
     function getPastVotes(address, uint256) external view returns (uint256);

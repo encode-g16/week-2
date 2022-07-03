@@ -9,5 +9,14 @@
     "resolveJsonModule": true,
   },
   "include": ["./scripts", "./tests", "./typechain"],
-  "files": ["./hardhat.config.ts"]
+  "files": ["./hardhat.config.ts"],
+  "scripts": {
+    "script:deployToken": "ts-node --files ./scripts/1_deployToken.ts",
+    "script:mintToken": "ts-node --files ./scripts/2_mintToken.ts",
+    "script:delegateVotingPower": "ts-node --files ./scripts/3_delegateVotingPower.ts",
+    "script:transferToken": "ts-node --files ./scripts/4_transferToken.ts",
+    "script:deployBallot": "ts-node --files ./scripts/5_deployBallot.ts",
+    "script:castVote": "ts-node --files ./scripts/6_castVote.ts",
+    "script:queryProposal": "ts-node --files ./scripts/7_queryProposal.ts"
+  }
 }
