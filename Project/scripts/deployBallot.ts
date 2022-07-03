@@ -3,6 +3,8 @@ import "dotenv/config";
 import * as ballotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 import { args, getRopstenProvider, getWallet } from "../config";
 
+const tokenAddress = "0x27F47342B874df32e9E6BBcb09BB2D12cb385b65";
+
 function convertStringArrayToBytes32(array: string[]) {
   const bytes32Array = [];
   for (let index = 0; index < array.length; index++) {
@@ -26,6 +28,7 @@ async function main() {
   if (balance < 0.01) {
     throw new Error("Not enough ether");
   }
+  console.log("Deploying Ballot contract");
 
   console.log("Proposals: ");
   const proposals = args.proposal;
