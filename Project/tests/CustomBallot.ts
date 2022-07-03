@@ -1,8 +1,6 @@
 import { expect } from "chai";
-// eslint-disable-next-line node/no-unpublished-import
 import { SignerWithAddress } from "@nomiclabs/hardhat-ethers/signers";
 import { ethers } from "hardhat";
-// eslint-disable-next-line node/no-missing-import
 import { CustomBallot, MyToken } from "../typechain";
 
 const PROPOSALS = ["Proposal 1", "Proposal 2", "Proposal 3"];
