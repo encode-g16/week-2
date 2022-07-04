@@ -80,11 +80,12 @@ Contract deployed at 0xCa051d37e3F41f24c8615703AfeC078DA6c754F4
 -----------------------------------------------------
 
 
+
 $ yarn ts-node scripts/castVote.ts --ba 0xCa051d37e3F41f24c8615703AfeC078DA6c754F4 --vp 3 --va 69
 
 Attaching ballot contract interface to address 0xCa051d37e3F41f24c8615703AfeC078DA6c754F4
 Voting Power of 0x870ac8121ba4a31dE8E5D91675edf3f937B8D7e9 is 1000000000000000000000
-Making vote for proposal No. 3: beans
+Making vote for proposal No. 4: beans
 Awaiting confirmations
 Transaction completed. Hash: 0x87a8fcb7fe67164290dcc251b14adc7ef864dd6209641a6e48344a755531a798
 Remaining voting power of address 0x870ac8121ba4a31dE8E5D91675edf3f937B8D7e9 is 931000000000000000000
