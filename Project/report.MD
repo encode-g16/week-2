@@ -1,4 +1,28 @@
 ```sh
+Options:
+      --help                      Show help                            [boolean]
+      --version                   Show version number                  [boolean]
+      --token-address, --ta       The address of the token contract     [string]
+      --ballot-address, --ba      The address of the ballot contract    [string]
+  -p, --proposal                  Add proposal                           [array]
+      --mint-to, --mt             Address to mint tokens to              [array]
+      --delegate-to, --dt         Address to delegate votes to           [array]
+      --vote-proposal, --vp       Index of the proposal to vote for     [number]
+      --vote-amount, --va         Amount of votes to add to the proposal[string]
+      --signer-private-key, --pk  Private key of the signer - default can be
+                                  defined by the PRIVATE_KEY environment
+                                  variable                              [string]
+  -m, --signer-mnemonic           Mnemonic of the signer - default can be
+                                  defined by the MNEMONIC environment variable
+                                                                        [string]
+      --ropsten-url, --rurl       The ropsten URL - default can be defined by
+                                  the ROPSTEN_URL environment variable  [string]
+      --infura-api-key, --ikey    Infura API key - default can be defined by the
+                                  INFURA_API_KEY environment variable   [string]
+
+-------------------------------------------
+
+
 
 $ yarn ts-node --files scripts/deployToken.ts
 
