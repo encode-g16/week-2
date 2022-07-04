@@ -66,4 +66,15 @@ Transaction completed. Hash: 0x87a8fcb7fe67164290dcc251b14adc7ef864dd6209641a6e4
 Remaining voting power of address 0x870ac8121ba4a31dE8E5D91675edf3f937B8D7e9 is 931000000000000000000
 -----------------------------------------------------
 
+
+$ yarn ts-node scripts/queryProposals.ts --ba 0xCa051d37e3F41f24c8615703AfeC078DA6c754F4
+
+Attaching ballot contract interface to address 0xCa051d37e3F41f24c8615703AfeC078DA6c754F4
+Proposal 1: cheese, vote count: 0
+Proposal 2: ham, vote count: 0
+Proposal 3: onions, vote count: 0
+Proposal 4: beans, vote count: 69000000000000000000
+Proposal 5: tea, vote count: 0
+Winning proposal is: beans
+-----------------------------------------------------
 ```

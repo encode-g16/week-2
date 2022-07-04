@@ -2,37 +2,26 @@ import { Contract, ethers } from "ethers";
 import "dotenv/config";
 import * as ballotJson from "../artifacts/contracts/CustomBallot.sol/CustomBallot.json";
 import { CustomBallot } from "../typechain";
-import ballot from "../registry.json";
-
-// retrieve ballotContract address from registry
-const ballotAddress = ballot.ballotAddress;
-// This key is already public on Herong's Tutorial Examples - v1.03, by Dr. Herong Yang
-// Do never expose your keys like this
-const PRIVATE_KEY = process.env.PRIVATE_KEY;
+import { args, getRopstenProvider, getWallet } from "../config";
 
 async function main() {
-  const wallet =
-    process.env.MNEMONIC && process.env.MNEMONIC.length > 0
-      ? ethers.Wallet.fromMnemonic(process.env.MNEMONIC)
-      : new ethers.Wallet(PRIVATE_KEY as string);
-  console.log(`Using address ${wallet.address}`);
-  const provider = ethers.providers.getDefaultProvider("ropsten");
-  const signer = wallet.connect(provider);
-  const balanceBN = await signer.getBalance();
-  const balance = Number(ethers.utils.formatEther(balanceBN));
-  console.log(`Wallet balance ${balance}`);
-  if (balance < 0.01) {
-    throw new Error("Not enough ether");
+  if (!args.ballotAddress) {
+    throw new Error(
+      "please provide the ballot address (--ballot-address or --ba)"
+    );
   }
+
+  const wallet = getWallet();
+  const provider = getRopstenProvider();
+  const signer = wallet.connect(provider);
   console.log(
-    `Attaching ballot contract interface to address ${ballotAddress}`
+    `Attaching ballot contract interface to address ${args.ballotAddress}`
   );
   const ballotContract = new Contract(
-    ballotAddress,
+    args.ballotAddress,
     ballotJson.abi,
     signer
   ) as CustomBallot;
-  // const chairpersonAddress = await ballotContract.chairperson();
 
   try {
     let proposal;
@@ -48,9 +37,12 @@ async function main() {
       );
       i++;
     }
-  } catch (error) {
-    console.log(`End of proposals array.`);
-  }
+  } catch (error) {}
+
+  const winnerName = await ballotContract.winnerName();
+  console.log(
+    `Winning proposal is: ${ethers.utils.parseBytes32String(winnerName)}`
+  );
 }
 
 main().catch((error) => {

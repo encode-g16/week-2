@@ -44,7 +44,7 @@ async function main() {
   const proposal = await ballotContract.proposals(args.voteProposal);
   console.log(
     `Making vote for proposal No. ${
-      args.voteProposal
+      args.voteProposal + 1
     }: ${ethers.utils.parseBytes32String(proposal.name)}`
   );
 
